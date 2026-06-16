@@ -1,0 +1,181 @@
+:root {
+    --bg:        #0d1117;
+    --bg-2:      #111a24;
+    --ink:       #eef2f5;
+    --muted:     #8b97a3;
+    --accent:    #f5b14c;   /* warm amber — the one highlight */
+    --glow-a:    #1f6f7a;   /* teal */
+    --glow-b:    #4a3b8a;   /* violet */
+    --line:      rgba(255,255,255,0.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+
+body {
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    position: relative;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Centers the card in the available space, but lets it scroll
+   instead of clipping or colliding on short screens. */
+.stage {
+    position: relative;
+    z-index: 1;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 1.5rem;
+}
+
+/* Ambient drifting glow */
+.aurora {
+    position: fixed;
+    inset: -30%;
+    z-index: 0;
+    filter: blur(80px);
+    opacity: 0.55;
+    pointer-events: none;
+}
+.aurora span {
+    position: absolute;
+    border-radius: 50%;
+    mix-blend-mode: screen;
+}
+.aurora .a {
+    width: 46vmax; height: 46vmax;
+    background: radial-gradient(circle, var(--glow-a), transparent 65%);
+    top: 5%; left: 8%;
+    animation: drift-a 22s ease-in-out infinite;
+}
+.aurora .b {
+    width: 40vmax; height: 40vmax;
+    background: radial-gradient(circle, var(--glow-b), transparent 65%);
+    bottom: 0%; right: 6%;
+    animation: drift-b 28s ease-in-out infinite;
+}
+.aurora .c {
+    width: 26vmax; height: 26vmax;
+    background: radial-gradient(circle, var(--accent), transparent 70%);
+    top: 40%; left: 45%;
+    opacity: 0.25;
+    animation: drift-c 25s ease-in-out infinite;
+}
+
+@keyframes drift-a { 50% { transform: translate(12vmax, 8vmax) scale(1.15); } }
+@keyframes drift-b { 50% { transform: translate(-10vmax, -9vmax) scale(1.1); } }
+@keyframes drift-c { 50% { transform: translate(-6vmax, 10vmax) scale(0.9); } }
+
+/* Content */
+.card {
+    max-width: 560px;
+    width: 100%;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 3rem 2.5rem;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.4rem 0.9rem;
+    margin-bottom: 1.75rem;
+}
+.dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 0 rgba(245,177,76,0.6);
+    animation: pulse 2.2s ease-out infinite;
+}
+@keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(245,177,76,0.5); }
+    70%  { box-shadow: 0 0 0 10px rgba(245,177,76,0); }
+    100% { box-shadow: 0 0 0 0 rgba(245,177,76,0); }
+}
+
+.brand {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+}
+
+h1 {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 6vw, 3.1rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+}
+h1 .accent { color: var(--accent); }
+
+p.lead {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 42ch;
+    margin: 0 auto 2rem;
+}
+
+.contact {
+    font-size: 0.95rem;
+    color: var(--muted);
+}
+.contact a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 1px;
+    transition: color 0.2s ease;
+}
+.contact a:hover,
+.contact a:focus-visible { color: var(--accent); }
+
+a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+}
+
+footer {
+    position: relative;
+    z-index: 1;
+    flex: 0 0 auto;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--muted);
+    opacity: 0.7;
+    padding: 1.5rem;
+}
+
+@media (max-width: 480px) {
+    .card { padding: 2.25rem 1.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .aurora span, .dot { animation: none; }
+}
